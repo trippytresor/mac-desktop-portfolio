@@ -9,9 +9,10 @@ import {
   Terminal,
   Globe,
   Settings,
+  Clapperboard,
 } from "lucide-react"
 
-export type AppId = "about" | "projects" | "contact" | "resume" | "terminal" | "browser" | "settings"
+export type AppId = "about" | "projects" | "contact" | "resume" | "terminal" | "browser" | "settings" | "motion"
 
 interface DockItem {
   id: AppId
@@ -56,6 +57,12 @@ const dockItems: DockItem[] = [
     label: "Browser",
     icon: <Globe className="h-6 w-6" />,
     color: "bg-gradient-to-br from-sky-400 to-indigo-500",
+  },
+  {
+    id: "motion",
+    label: "Motion Design",
+    icon: <Clapperboard className="h-6 w-6" />,
+    color: "bg-gradient-to-br from-fuchsia-500 to-purple-600",
   },
   {
     id: "settings",

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useRef, useEffect } from "react"
 import { MenuBar } from "./menu-bar"
 import { Dock, type AppId } from "./dock"
 import { Window } from "./window"
@@ -11,12 +11,14 @@ import { ResumeApp } from "./apps/resume-app"
 import { TerminalApp } from "./apps/terminal-app"
 import { BrowserApp } from "./apps/browser-app"
 import { SettingsApp } from "./apps/settings-app"
+import { MotionApp } from "./apps/motion-app"
 import {
   User,
   FolderOpen,
   FileText,
   Mail,
   HardDrive,
+  Clapperboard,
 } from "lucide-react"
 
 interface WindowState {
@@ -76,35 +78,145 @@ const APP_CONFIG: Record<
     defaultSize: { width: 740, height: 500 },
     defaultPosition: { x: 160, y: 70 },
   },
+  motion: {
+    title: "Motion Design",
+    component: <MotionApp />,
+    defaultSize: { width: 740, height: 540 },
+    defaultPosition: { x: 100, y: 60 },
+  },
 }
 
-const DESKTOP_ICONS: { id: AppId; label: string; icon: React.ReactNode }[] = [
+const INITIAL_DESKTOP_ICONS: { id: AppId; label: string; icon: React.ReactNode; defaultPos: { x: number; y: number } }[] = [
+  {
+    id: "motion",
+    label: "Motion Design",
+    icon: <Clapperboard className="h-8 w-8" />,
+    defaultPos: { x: -100, y: 40 },
+  },
   {
     id: "about",
     label: "About Me",
     icon: <User className="h-8 w-8" />,
+    defaultPos: { x: -100, y: 130 },
   },
   {
     id: "projects",
     label: "Projects",
     icon: <FolderOpen className="h-8 w-8" />,
+    defaultPos: { x: -100, y: 220 },
   },
   {
     id: "resume",
     label: "Resume.pdf",
     icon: <FileText className="h-8 w-8" />,
+    defaultPos: { x: -100, y: 310 },
   },
   {
     id: "contact",
     label: "Contact",
     icon: <Mail className="h-8 w-8" />,
+    defaultPos: { x: -100, y: 400 },
   },
   {
     id: "browser",
     label: "Macintosh HD",
     icon: <HardDrive className="h-8 w-8" />,
+    defaultPos: { x: -100, y: 490 },
   },
 ]
+
+function DraggableIcon({
+  id,
+  label,
+  icon,
+  defaultPos,
+  onOpen,
+}: {
+  id: AppId
+  label: string
+  icon: React.ReactNode
+  defaultPos: { x: number; y: number }
+  onOpen: (id: AppId) => void
+}) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [pos, setPos] = useState(defaultPos)
+  const dragState = useRef({ isDragging: false, hasMoved: false, startX: 0, startY: 0, startPosX: 0, startPosY: 0 })
+
+  // Resolve positions relative to viewport width on mount
+  useEffect(() => {
+    if (defaultPos.x < 0) {
+      setPos({ x: window.innerWidth + defaultPos.x, y: defaultPos.y })
+    }
+  }, [defaultPos])
+
+  useEffect(() => {
+    const handleMove = (e: MouseEvent) => {
+      if (!dragState.current.isDragging) return
+      const dx = e.clientX - dragState.current.startX
+      const dy = e.clientY - dragState.current.startY
+      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+        dragState.current.hasMoved = true
+      }
+      setPos({
+        x: dragState.current.startPosX + dx,
+        y: Math.max(28, dragState.current.startPosY + dy),
+      })
+    }
+    const handleUp = () => {
+      dragState.current.isDragging = false
+    }
+    window.addEventListener("mousemove", handleMove)
+    window.addEventListener("mouseup", handleUp)
+    return () => {
+      window.removeEventListener("mousemove", handleMove)
+      window.removeEventListener("mouseup", handleUp)
+    }
+  }, [])
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault()
+    dragState.current = {
+      isDragging: true,
+      hasMoved: false,
+      startX: e.clientX,
+      startY: e.clientY,
+      startPosX: pos.x,
+      startPosY: pos.y,
+    }
+  }
+
+  const handleDoubleClick = () => {
+    if (!dragState.current.hasMoved) {
+      onOpen(id)
+    }
+  }
+
+  return (
+    <div
+      ref={containerRef}
+      className="absolute flex flex-col items-center gap-1 rounded-lg p-2 hover:bg-white/20 transition-colors w-20 cursor-default z-[1]"
+      style={{ left: pos.x, top: pos.y }}
+      onMouseDown={handleMouseDown}
+      onDoubleClick={handleDoubleClick}
+    >
+      <div
+        className="flex h-14 w-14 items-center justify-center rounded-xl text-white"
+        style={{
+          background: "hsla(0, 0%, 100%, 0.15)",
+          backdropFilter: "blur(8px)",
+        }}
+      >
+        {icon}
+      </div>
+      <span
+        className="text-[11px] font-medium text-center leading-tight text-white"
+        style={{ textShadow: "0 1px 3px hsla(0,0%,0%,0.5)" }}
+      >
+        {label}
+      </span>
+    </div>
+  )
+}
 
 export function Desktop() {
   const [windows, setWindows] = useState<WindowState[]>([])
@@ -165,32 +277,17 @@ export function Desktop() {
       {/* Menu Bar */}
       <MenuBar activeApp={activeApp} />
 
-      {/* Desktop Icons */}
-      <div className="absolute right-4 top-10 flex flex-col gap-2 z-[1]">
-        {DESKTOP_ICONS.map((item) => (
-          <button
-            key={item.id}
-            onDoubleClick={() => openWindow(item.id)}
-            className="group flex flex-col items-center gap-1 rounded-lg p-2 hover:bg-white/20 transition-colors w-20"
-          >
-            <div
-              className="flex h-14 w-14 items-center justify-center rounded-xl text-white"
-              style={{
-                background: "hsla(0, 0%, 100%, 0.15)",
-                backdropFilter: "blur(8px)",
-              }}
-            >
-              {item.icon}
-            </div>
-            <span
-              className="text-[11px] font-medium text-center leading-tight text-white"
-              style={{ textShadow: "0 1px 3px hsla(0,0%,0%,0.5)" }}
-            >
-              {item.label}
-            </span>
-          </button>
-        ))}
-      </div>
+      {/* Desktop Icons (draggable) */}
+      {INITIAL_DESKTOP_ICONS.map((item) => (
+        <DraggableIcon
+          key={item.id}
+          id={item.id}
+          label={item.label}
+          icon={item.icon}
+          defaultPos={item.defaultPos}
+          onOpen={openWindow}
+        />
+      ))}
 
       {/* Windows */}
       {windows.map((win) => {
