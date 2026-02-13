@@ -1,213 +1,354 @@
 "use client"
 
-import { useState } from "react"
-import { Play, Pause, ChevronLeft, ExternalLink, Clock, Layers } from "lucide-react"
+import { useState, useRef, useEffect } from "react"
+import {
+  Play,
+  Pause,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Layers,
+  ArrowRight,
+  ExternalLink,
+  Zap,
+  Eye,
+  Target,
+  Sparkles,
+} from "lucide-react"
 
-interface MotionProject {
+/* ─── Case Study Data ──────────────────────────────────────────── */
+
+interface CaseStudy {
   id: string
   title: string
-  description: string
-  longDescription: string
-  tags: string[]
+  client: string
+  year: string
+  role: string
   duration: string
+  overview: string
+  challenge: string
+  approach: string
+  result: string
+  gradient: string
+  accentHsl: string
   tools: string[]
-  color: string
-  frames: string[]
+  tags: string[]
+  stats: { label: string; value: string }[]
+  phases: { title: string; description: string }[]
+  deliverables: string[]
 }
 
-const motionProjects: MotionProject[] = [
+const caseStudies: CaseStudy[] = [
   {
-    id: "1",
+    id: "fluid-interfaces",
     title: "Fluid Interfaces",
-    description: "Micro-interactions & UI transitions for a fintech app",
-    longDescription:
-      "A comprehensive motion design system for a fintech application, featuring fluid page transitions, spring-based gesture animations, and delightful micro-interactions. Every element responds naturally to user input with physics-based easing curves.",
-    tags: ["UI Animation", "Micro-interactions", "Prototyping"],
-    duration: "0:42",
-    tools: ["After Effects", "Principle", "Lottie"],
-    color: "from-violet-500 to-fuchsia-500",
-    frames: ["hsl(270, 60%, 92%)", "hsl(290, 60%, 90%)", "hsl(310, 60%, 92%)"],
+    client: "FinVault",
+    year: "2025",
+    role: "Lead Motion Designer",
+    duration: "8 weeks",
+    overview:
+      "A comprehensive motion system for a next-gen fintech platform. Every interaction was designed to feel tactile and responsive -- from page transitions that morph between states to spring-based gestures that give users a sense of direct manipulation.",
+    challenge:
+      "FinVault's existing app felt static and mechanical. Users reported the interface felt 'disconnected' from their actions. The challenge was to create a motion language that made complex financial data feel approachable without sacrificing performance on lower-end devices.",
+    approach:
+      "I built a modular animation library using spring physics rather than bezier curves, allowing elements to respond naturally to velocity and direction. Every animation was designed to convey meaning -- loading states communicate progress, transitions show spatial relationships, and micro-interactions confirm actions.",
+    result:
+      "User engagement increased 42% and the 'app feels premium' sentiment in surveys jumped from 23% to 87%. The motion system was adopted across all FinVault products.",
+    gradient: "from-violet-500 to-fuchsia-500",
+    accentHsl: "hsl(270, 60%, 55%)",
+    tools: ["After Effects", "Principle", "Lottie", "Rive"],
+    tags: ["UI Animation", "Micro-interactions", "Design System"],
+    stats: [
+      { label: "Engagement", value: "+42%" },
+      { label: "Premium Feel", value: "87%" },
+      { label: "Components", value: "120+" },
+      { label: "Load Time", value: "<16ms" },
+    ],
+    phases: [
+      { title: "Audit", description: "Mapped every interaction point across 48 screens to identify animation opportunities and pain points." },
+      { title: "Principles", description: "Defined 5 core motion principles: responsive, meaningful, consistent, performant, and delightful." },
+      { title: "Prototype", description: "Built high-fidelity prototypes in Principle to test spring physics and gesture-based transitions." },
+      { title: "Implement", description: "Worked with engineering to implement Lottie + Rive animations with a shared token system." },
+    ],
+    deliverables: ["Animation library (120+ components)", "Motion guidelines document", "Lottie export pipeline", "Developer handoff specs"],
   },
   {
-    id: "2",
+    id: "brand-reveal",
     title: "Brand Reveal",
-    description: "Logo animation & brand identity motion",
-    longDescription:
-      "A striking brand reveal sequence combining 3D elements with 2D typography. The logo deconstructs and reassembles through particle effects, establishing a bold visual identity that carries across all digital touchpoints.",
-    tags: ["Logo Animation", "Brand Identity", "3D"],
-    duration: "0:15",
-    tools: ["Cinema 4D", "After Effects", "Redshift"],
-    color: "from-amber-500 to-orange-600",
-    frames: ["hsl(38, 80%, 92%)", "hsl(25, 80%, 90%)", "hsl(15, 80%, 92%)"],
+    client: "Helios Labs",
+    year: "2025",
+    role: "Motion Director",
+    duration: "4 weeks",
+    overview:
+      "A cinematic brand reveal combining 3D particle systems with typographic choreography. The logo deconstructs into light particles and reforms through volumetric space, establishing Helios Labs' identity as a forward-looking biotech company.",
+    challenge:
+      "Helios Labs was rebranding from a traditional pharmaceutical company to a cutting-edge biotech firm. The reveal needed to bridge the gap between scientific precision and creative innovation, while being adaptable across digital, social, and broadcast formats.",
+    approach:
+      "I developed the concept around 'emergence' -- the idea that complex beauty arises from simple elements. The logo is built from 10,000+ particles that follow flocking algorithms, creating organic movement that still resolves into precise geometric forms.",
+    result:
+      "The reveal generated 2.8M views across platforms in the first week. It was featured in Motion Design School's annual showcase and became the benchmark for all subsequent Helios brand content.",
+    gradient: "from-amber-500 to-orange-600",
+    accentHsl: "hsl(30, 90%, 52%)",
+    tools: ["Cinema 4D", "Redshift", "After Effects", "X-Particles"],
+    tags: ["Logo Animation", "3D", "Brand Identity", "Broadcast"],
+    stats: [
+      { label: "Views (Week 1)", value: "2.8M" },
+      { label: "Formats", value: "12" },
+      { label: "Particles", value: "10K+" },
+      { label: "Render Time", value: "72hrs" },
+    ],
+    phases: [
+      { title: "Concept", description: "Explored 'emergence' as the central theme -- complexity arising from simplicity." },
+      { title: "R&D", description: "Developed particle flocking systems in Cinema 4D with X-Particles to achieve organic movement." },
+      { title: "Animation", description: "Choreographed the 15-second sequence across 3 acts: dissolution, journey, and formation." },
+      { title: "Delivery", description: "Rendered and adapted for 12 formats: 4K broadcast, social (1:1, 9:16, 16:9), and web." },
+    ],
+    deliverables: ["15s hero animation", "5s social loops (3 variants)", "Brand motion guidelines", "Template project files"],
   },
   {
-    id: "3",
+    id: "data-viz",
     title: "Data Viz Motion",
-    description: "Animated data visualization for annual report",
-    longDescription:
-      "Transforming complex financial data into an engaging animated narrative. Charts, graphs, and infographics come alive with carefully choreographed sequences that guide the viewer through key insights with clarity and visual impact.",
-    tags: ["Data Viz", "Infographics", "Storytelling"],
-    duration: "1:20",
-    tools: ["After Effects", "Illustrator", "D3.js"],
-    color: "from-emerald-500 to-teal-600",
-    frames: ["hsl(160, 60%, 92%)", "hsl(170, 60%, 90%)", "hsl(180, 60%, 92%)"],
+    client: "Meridian Capital",
+    year: "2024",
+    role: "Creative Lead",
+    duration: "12 weeks",
+    overview:
+      "Transforming Meridian Capital's annual report into an interactive animated narrative. Complex financial data becomes engaging through choreographed visualizations that guide viewers through a year of market movements, portfolio performance, and strategic insights.",
+    challenge:
+      "Annual reports are notoriously dry. Meridian needed their data to not only inform but engage board members, investors, and the public. The 80-second piece had to maintain scientific accuracy while being visually compelling enough for social media distribution.",
+    approach:
+      "I treated each data point as a character in a story. Charts don't just appear -- they build from raw data particles that settle into meaningful formations. Color encodes sentiment, movement encodes velocity of change, and scale encodes magnitude. A consistent visual grammar ties 14 distinct data sets into one narrative.",
+    result:
+      "The animated report had 5x longer average view time than the static PDF version. Investor engagement with the annual report increased 310%, and the approach was adopted for quarterly reporting.",
+    gradient: "from-emerald-500 to-teal-600",
+    accentHsl: "hsl(160, 60%, 45%)",
+    tools: ["After Effects", "D3.js", "Illustrator", "Figma"],
+    tags: ["Data Visualization", "Infographics", "Storytelling", "Interactive"],
+    stats: [
+      { label: "View Time", value: "5x" },
+      { label: "Engagement", value: "+310%" },
+      { label: "Data Sets", value: "14" },
+      { label: "Duration", value: "80s" },
+    ],
+    phases: [
+      { title: "Data Audit", description: "Analyzed 14 datasets to identify narrative arcs and the most impactful story beats." },
+      { title: "Storyboard", description: "Created a frame-by-frame storyboard mapping data transformations to emotional beats." },
+      { title: "Design", description: "Developed a visual grammar for encoding data dimensions through color, motion, and scale." },
+      { title: "Animate", description: "Produced 80 seconds of choreographed data animation with procedural and hand-keyed techniques." },
+    ],
+    deliverables: ["80s animated report", "Interactive web version (D3.js)", "Social media cuts (6 clips)", "Style guide"],
   },
   {
-    id: "4",
+    id: "onboarding",
     title: "Onboarding Flow",
-    description: "Animated onboarding sequence for a health app",
-    longDescription:
-      "A warm, inviting onboarding experience using character animation and illustrated scenes. Each step transitions seamlessly into the next with morphing shapes and staggered text reveals, reducing drop-off by 35%.",
-    tags: ["Onboarding", "Character Animation", "UX"],
-    duration: "0:58",
-    tools: ["After Effects", "Figma", "Bodymovin"],
-    color: "from-sky-500 to-blue-600",
-    frames: ["hsl(200, 70%, 92%)", "hsl(210, 70%, 90%)", "hsl(220, 70%, 92%)"],
+    client: "Wellspring Health",
+    year: "2024",
+    role: "Motion Designer",
+    duration: "6 weeks",
+    overview:
+      "A warm, human-centered onboarding experience for a health and wellness app. Character animation and illustrated scenes guide new users through account setup, goal selection, and their first tracked activity -- reducing drop-off by 35%.",
+    challenge:
+      "Wellspring's previous onboarding was a 7-step form that lost 60% of users before completion. The challenge was to make the setup process feel like a conversation rather than an interrogation, while still collecting the data needed for personalization.",
+    approach:
+      "I designed animated transitions where each screen morphs into the next -- a selected goal icon expands into the next screen's illustration, form fields float in as the character guide gestures toward them. The result feels like turning pages in a storybook rather than filling out forms.",
+    result:
+      "Onboarding completion jumped from 40% to 75%. Time-to-first-action decreased by 28%, and the animated approach was extended to the app's entire tutorial system.",
+    gradient: "from-sky-500 to-blue-600",
+    accentHsl: "hsl(205, 80%, 52%)",
+    tools: ["After Effects", "Figma", "Bodymovin", "Lottie"],
+    tags: ["Onboarding", "Character Animation", "UX", "Mobile"],
+    stats: [
+      { label: "Completion", value: "75%" },
+      { label: "Drop-off", value: "-35%" },
+      { label: "Time to Action", value: "-28%" },
+      { label: "Screens", value: "7" },
+    ],
+    phases: [
+      { title: "UX Research", description: "Analyzed drop-off data and conducted user interviews to identify friction points." },
+      { title: "Character Design", description: "Created an animated guide character with 12 unique poses and expressions." },
+      { title: "Flow Design", description: "Designed morphing transitions between screens so each step flows into the next." },
+      { title: "Export", description: "Optimized Lottie exports to stay under 50kb per animation for mobile performance." },
+    ],
+    deliverables: ["7 onboarding animations", "Character animation library", "Lottie exports", "Motion specs for dev"],
   },
   {
-    id: "5",
+    id: "product-launch",
     title: "Product Launch",
-    description: "3D product showcase with kinetic typography",
-    longDescription:
-      "A high-energy product launch video combining 3D product renders with kinetic typography and dynamic camera movements. Bold colors and snappy timing create a sense of excitement and premium quality.",
-    tags: ["3D", "Kinetic Type", "Product"],
-    duration: "0:30",
-    tools: ["Blender", "After Effects", "Premiere"],
-    color: "from-rose-500 to-red-600",
-    frames: ["hsl(350, 70%, 92%)", "hsl(0, 70%, 90%)", "hsl(10, 70%, 92%)"],
-  },
-  {
-    id: "6",
-    title: "Social Toolkit",
-    description: "Animated template system for social media",
-    longDescription:
-      "A modular motion design toolkit for social media content. Includes animated lower thirds, story templates, carousel transitions, and reusable text reveal presets -- all built with a consistent visual language and easy customization.",
-    tags: ["Social Media", "Templates", "Motion System"],
-    duration: "Various",
-    tools: ["After Effects", "Figma", "Lottie"],
-    color: "from-pink-500 to-rose-500",
-    frames: ["hsl(330, 70%, 92%)", "hsl(340, 70%, 90%)", "hsl(350, 70%, 92%)"],
+    client: "Aether Audio",
+    year: "2025",
+    role: "Motion Director",
+    duration: "5 weeks",
+    overview:
+      "A high-energy product launch film for Aether Audio's flagship wireless headphones. Combining photorealistic 3D product renders with kinetic typography and dynamic camera work, the 30-second spot positions the product as a premium piece of wearable technology.",
+    challenge:
+      "Aether Audio was entering a saturated market dominated by established brands. The launch film needed to immediately communicate premium quality, technical innovation, and desirability -- all within 30 seconds and without relying on celebrity endorsement.",
+    approach:
+      "I focused on the product itself as the hero. Macro-level 3D renders reveal material textures and engineering details, while kinetic type overlays communicate specs with the rhythm and energy of a music video. The camera never stops moving, creating a sense of momentum and excitement.",
+    result:
+      "The launch film contributed to a sell-out of the initial 50K-unit run within 48 hours. It was awarded Bronze at the ADC Awards for Motion Design and became a case study in product-focused storytelling.",
+    gradient: "from-rose-500 to-red-600",
+    accentHsl: "hsl(350, 75%, 52%)",
+    tools: ["Blender", "After Effects", "Premiere Pro", "Octane"],
+    tags: ["3D", "Kinetic Typography", "Product Film", "Broadcast"],
+    stats: [
+      { label: "Units Sold", value: "50K" },
+      { label: "Sell-out", value: "48hrs" },
+      { label: "ADC Award", value: "Bronze" },
+      { label: "Duration", value: "30s" },
+    ],
+    phases: [
+      { title: "Styleframes", description: "Developed 8 key styleframes establishing the visual tone: dark, premium, kinetic." },
+      { title: "3D Modeling", description: "Built photorealistic product model in Blender with accurate materials and lighting." },
+      { title: "Animation", description: "Choreographed camera moves, product reveals, and kinetic type to a custom soundtrack." },
+      { title: "Post", description: "Color graded, composited lens effects, and delivered across broadcast and digital formats." },
+    ],
+    deliverables: ["30s hero film", "15s cut-down", "6s bumpers (3 variants)", "Behind-the-scenes breakdown"],
   },
 ]
 
-function AnimatedPreview({ project, isPlaying }: { project: MotionProject; isPlaying: boolean }) {
+/* ─── Animated Preview ──────────────────────────────────────────── */
+
+function AnimatedPreview({
+  gradient,
+  title,
+  isPlaying,
+}: {
+  gradient: string
+  title: string
+  isPlaying: boolean
+}) {
   return (
-    <div className={`relative h-full w-full bg-gradient-to-br ${project.color} flex items-center justify-center overflow-hidden`}>
-      {/* Animated shapes */}
+    <div className={`relative h-full w-full bg-gradient-to-br ${gradient} flex items-center justify-center overflow-hidden`}>
       <div className="absolute inset-0 flex items-center justify-center">
         <div
-          className={`absolute h-24 w-24 rounded-full opacity-30 ${isPlaying ? "animate-ping" : ""}`}
-          style={{ background: "hsla(0, 0%, 100%, 0.3)", animationDuration: "2s" }}
+          className={`absolute h-32 w-32 rounded-full ${isPlaying ? "animate-ping" : ""}`}
+          style={{ background: "hsla(0, 0%, 100%, 0.08)", animationDuration: "3s" }}
         />
         <div
-          className={`absolute h-16 w-16 rounded-xl opacity-40 ${isPlaying ? "animate-spin" : ""}`}
-          style={{ background: "hsla(0, 0%, 100%, 0.25)", animationDuration: "3s" }}
+          className={`absolute h-20 w-20 rounded-xl ${isPlaying ? "animate-spin" : ""}`}
+          style={{ background: "hsla(0, 0%, 100%, 0.06)", animationDuration: "4s" }}
         />
         <div
-          className={`absolute h-10 w-10 rounded-full opacity-50 ${isPlaying ? "animate-bounce" : ""}`}
-          style={{ background: "hsla(0, 0%, 100%, 0.35)" }}
+          className={`absolute h-12 w-12 rounded-full ${isPlaying ? "animate-bounce" : ""}`}
+          style={{ background: "hsla(0, 0%, 100%, 0.1)" }}
         />
       </div>
-      {/* Title overlay */}
-      <h2 className="relative z-10 text-2xl font-bold text-white" style={{ textShadow: "0 2px 8px hsla(0,0%,0%,0.3)" }}>
-        {project.title}
+      <h2
+        className="relative z-10 text-3xl font-bold text-white text-center px-4"
+        style={{ textShadow: "0 2px 12px hsla(0,0%,0%,0.4)" }}
+      >
+        {title}
       </h2>
     </div>
   )
 }
 
-export function MotionApp() {
-  const [selected, setSelected] = useState<MotionProject | null>(null)
-  const [playingId, setPlayingId] = useState<string | null>(null)
+/* ─── Case Study Detail ─────────────────────────────────────────── */
 
-  if (selected) {
-    const isPlaying = playingId === selected.id
-    return (
-      <div className="flex h-full flex-col">
-        {/* Toolbar */}
-        <div
-          className="flex items-center gap-3 px-4 py-2"
-          style={{ background: "hsl(220, 14%, 96%)", borderBottom: "1px solid hsl(220, 13%, 88%)" }}
+function CaseStudyDetail({
+  study,
+  onBack,
+}: {
+  study: CaseStudy
+  onBack: () => void
+}) {
+  const [isPlaying, setIsPlaying] = useState(true)
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  return (
+    <div className="flex h-full flex-col">
+      {/* Toolbar */}
+      <div
+        className="flex items-center gap-3 px-4 py-2 flex-shrink-0"
+        style={{ background: "hsl(220, 14%, 96%)", borderBottom: "1px solid hsl(220, 13%, 88%)" }}
+      >
+        <button
+          onClick={onBack}
+          className="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium hover:bg-black/5 transition-colors"
+          style={{ color: "hsl(211, 100%, 50%)" }}
         >
+          <ChevronLeft className="h-3.5 w-3.5" />
+          All Projects
+        </button>
+        <div className="flex-1" />
+        <span className="text-xs font-medium" style={{ color: "hsl(220, 9%, 46%)" }}>
+          {study.client} &middot; {study.year}
+        </span>
+      </div>
+
+      {/* Scrollable content */}
+      <div ref={scrollRef} className="flex-1 overflow-auto">
+
+        {/* ── LAYOUT 1: Full-bleed Hero ─────────────────── */}
+        <div className="relative h-64">
+          <AnimatedPreview gradient={study.gradient} title={study.title} isPlaying={isPlaying} />
           <button
-            onClick={() => { setSelected(null); setPlayingId(null) }}
-            className="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium hover:bg-black/5 transition-colors"
-            style={{ color: "hsl(211, 100%, 50%)" }}
+            onClick={() => setIsPlaying(!isPlaying)}
+            className="absolute inset-0 flex items-center justify-center bg-black/0 hover:bg-black/10 transition-colors"
+            aria-label={isPlaying ? "Pause" : "Play"}
           >
-            <ChevronLeft className="h-3.5 w-3.5" />
-            Back
+            <div
+              className="flex h-14 w-14 items-center justify-center rounded-full"
+              style={{ background: "hsla(0, 0%, 100%, 0.85)", backdropFilter: "blur(8px)" }}
+            >
+              {isPlaying ? (
+                <Pause className="h-5 w-5" style={{ color: "hsl(220, 9%, 20%)" }} />
+              ) : (
+                <Play className="h-5 w-5 ml-0.5" style={{ color: "hsl(220, 9%, 20%)" }} />
+              )}
+            </div>
           </button>
-          <div className="flex-1" />
-          <span className="flex items-center gap-1 text-xs" style={{ color: "hsl(220, 9%, 46%)" }}>
-            <Clock className="h-3 w-3" />
-            {selected.duration}
-          </span>
+          {/* Metadata overlay */}
+          <div className="absolute bottom-0 left-0 right-0 p-5" style={{ background: "linear-gradient(to top, hsla(0,0%,0%,0.6), transparent)" }}>
+            <div className="flex flex-wrap gap-2">
+              {study.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full px-2.5 py-0.5 text-[11px] font-medium text-white"
+                  style={{ background: "hsla(0, 0%, 100%, 0.2)", backdropFilter: "blur(4px)" }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* Detail view */}
-        <div className="flex-1 overflow-auto">
-          {/* Video preview */}
-          <div className="relative h-56">
-            <AnimatedPreview project={selected} isPlaying={isPlaying} />
-            <button
-              onClick={() => setPlayingId(isPlaying ? null : selected.id)}
-              className="absolute inset-0 flex items-center justify-center bg-black/10 hover:bg-black/20 transition-colors"
-              aria-label={isPlaying ? "Pause" : "Play"}
-            >
-              <div
-                className="flex h-14 w-14 items-center justify-center rounded-full"
-                style={{ background: "hsla(0, 0%, 100%, 0.9)", backdropFilter: "blur(8px)" }}
-              >
-                {isPlaying ? (
-                  <Pause className="h-6 w-6" style={{ color: "hsl(220, 9%, 20%)" }} />
-                ) : (
-                  <Play className="h-6 w-6 ml-0.5" style={{ color: "hsl(220, 9%, 20%)" }} />
-                )}
-              </div>
-            </button>
-          </div>
-
-          {/* Details */}
-          <div className="p-6">
-            <h1 className="mb-1 text-xl font-bold" style={{ color: "hsl(220, 9%, 12%)" }}>
-              {selected.title}
-            </h1>
-            <p className="mb-4 text-sm" style={{ color: "hsl(220, 9%, 46%)" }}>
-              {selected.description}
-            </p>
-
-            <p className="mb-5 text-[14px] leading-relaxed" style={{ color: "hsl(220, 9%, 25%)" }}>
-              {selected.longDescription}
-            </p>
-
-            <div className="mb-4">
-              <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider" style={{ color: "hsl(220, 9%, 46%)" }}>
-                Tags
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {selected.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-md px-2.5 py-1 text-xs font-medium"
-                    style={{ background: "hsl(220, 14%, 94%)", color: "hsl(280, 60%, 45%)" }}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
+        {/* ── LAYOUT 2: Stats Bar ───────────────────────── */}
+        <div
+          className="grid grid-cols-4 divide-x"
+          style={{ background: "hsl(220, 14%, 97%)", borderBottom: "1px solid hsl(220, 13%, 90%)", divideColor: "hsl(220, 13%, 90%)" }}
+        >
+          {study.stats.map((stat) => (
+            <div key={stat.label} className="flex flex-col items-center py-4 gap-0.5">
+              <span className="text-lg font-bold" style={{ color: study.accentHsl }}>{stat.value}</span>
+              <span className="text-[10px] font-medium uppercase tracking-wider" style={{ color: "hsl(220, 9%, 50%)" }}>{stat.label}</span>
             </div>
+          ))}
+        </div>
 
+        {/* ── LAYOUT 3: Two-column Overview + Meta ──────── */}
+        <div className="flex gap-6 p-6" style={{ borderBottom: "1px solid hsl(220, 13%, 92%)" }}>
+          <div className="flex-1">
+            <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider" style={{ color: "hsl(220, 9%, 50%)" }}>Overview</h3>
+            <p className="text-[13px] leading-relaxed" style={{ color: "hsl(220, 9%, 25%)" }}>
+              {study.overview}
+            </p>
+          </div>
+          <div className="w-40 flex-shrink-0 flex flex-col gap-3">
             <div>
-              <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider" style={{ color: "hsl(220, 9%, 46%)" }}>
-                Tools Used
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {selected.tools.map((tool) => (
-                  <span
-                    key={tool}
-                    className="rounded-md px-2.5 py-1 text-xs font-medium"
-                    style={{ background: "hsl(220, 14%, 94%)", color: "hsl(220, 9%, 36%)" }}
-                  >
+              <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: "hsl(220, 9%, 50%)" }}>Role</span>
+              <p className="text-xs font-medium mt-0.5" style={{ color: "hsl(220, 9%, 20%)" }}>{study.role}</p>
+            </div>
+            <div>
+              <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: "hsl(220, 9%, 50%)" }}>Duration</span>
+              <p className="text-xs font-medium mt-0.5" style={{ color: "hsl(220, 9%, 20%)" }}>{study.duration}</p>
+            </div>
+            <div>
+              <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: "hsl(220, 9%, 50%)" }}>Tools</span>
+              <div className="flex flex-wrap gap-1 mt-1">
+                {study.tools.map((tool) => (
+                  <span key={tool} className="rounded px-1.5 py-0.5 text-[10px] font-medium" style={{ background: "hsl(220, 14%, 94%)", color: "hsl(220, 9%, 36%)" }}>
                     {tool}
                   </span>
                 ))}
@@ -215,77 +356,193 @@ export function MotionApp() {
             </div>
           </div>
         </div>
+
+        {/* ── LAYOUT 4: Challenge / Approach Split ──────── */}
+        <div className="grid grid-cols-2" style={{ borderBottom: "1px solid hsl(220, 13%, 92%)" }}>
+          <div className="p-6" style={{ borderRight: "1px solid hsl(220, 13%, 92%)" }}>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="flex h-6 w-6 items-center justify-center rounded-md" style={{ background: "hsl(0, 72%, 95%)" }}>
+                <Target className="h-3.5 w-3.5" style={{ color: "hsl(0, 72%, 51%)" }} />
+              </div>
+              <h3 className="text-xs font-semibold uppercase tracking-wider" style={{ color: "hsl(220, 9%, 50%)" }}>Challenge</h3>
+            </div>
+            <p className="text-[13px] leading-relaxed" style={{ color: "hsl(220, 9%, 25%)" }}>
+              {study.challenge}
+            </p>
+          </div>
+          <div className="p-6">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="flex h-6 w-6 items-center justify-center rounded-md" style={{ background: "hsl(142, 71%, 93%)" }}>
+                <Zap className="h-3.5 w-3.5" style={{ color: "hsl(142, 71%, 35%)" }} />
+              </div>
+              <h3 className="text-xs font-semibold uppercase tracking-wider" style={{ color: "hsl(220, 9%, 50%)" }}>Approach</h3>
+            </div>
+            <p className="text-[13px] leading-relaxed" style={{ color: "hsl(220, 9%, 25%)" }}>
+              {study.approach}
+            </p>
+          </div>
+        </div>
+
+        {/* ── LAYOUT 5: Process Timeline (Horizontal) ───── */}
+        <div className="p-6" style={{ borderBottom: "1px solid hsl(220, 13%, 92%)" }}>
+          <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider" style={{ color: "hsl(220, 9%, 50%)" }}>Process</h3>
+          <div className="flex gap-3">
+            {study.phases.map((phase, i) => (
+              <div key={phase.title} className="flex-1 relative">
+                {/* Connector line */}
+                {i < study.phases.length - 1 && (
+                  <div className="absolute top-3 left-[calc(50%+12px)] right-0 h-px" style={{ background: "hsl(220, 13%, 88%)" }} />
+                )}
+                <div className="flex flex-col items-center text-center">
+                  <div
+                    className="flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-bold text-white mb-2 relative z-10"
+                    style={{ background: study.accentHsl }}
+                  >
+                    {i + 1}
+                  </div>
+                  <h4 className="text-xs font-semibold mb-1" style={{ color: "hsl(220, 9%, 18%)" }}>{phase.title}</h4>
+                  <p className="text-[11px] leading-snug" style={{ color: "hsl(220, 9%, 46%)" }}>{phase.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── LAYOUT 6: Result + Deliverables Bento ─────── */}
+        <div className="grid grid-cols-5 gap-4 p-6">
+          {/* Result card -- spans 3 cols */}
+          <div className="col-span-3 rounded-xl p-5" style={{ background: `linear-gradient(135deg, ${study.accentHsl}, hsl(220, 14%, 20%))` }}>
+            <div className="flex items-center gap-2 mb-2">
+              <Sparkles className="h-4 w-4 text-white/80" />
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-white/70">Result</h3>
+            </div>
+            <p className="text-[13px] leading-relaxed text-white/90">
+              {study.result}
+            </p>
+          </div>
+          {/* Deliverables card -- spans 2 cols */}
+          <div className="col-span-2 rounded-xl p-5" style={{ background: "hsl(220, 14%, 97%)", border: "1px solid hsl(220, 13%, 90%)" }}>
+            <div className="flex items-center gap-2 mb-3">
+              <Layers className="h-4 w-4" style={{ color: "hsl(220, 9%, 46%)" }} />
+              <h3 className="text-xs font-semibold uppercase tracking-wider" style={{ color: "hsl(220, 9%, 50%)" }}>Deliverables</h3>
+            </div>
+            <ul className="flex flex-col gap-2">
+              {study.deliverables.map((d) => (
+                <li key={d} className="flex items-start gap-2 text-[12px]" style={{ color: "hsl(220, 9%, 25%)" }}>
+                  <ArrowRight className="h-3 w-3 mt-0.5 flex-shrink-0" style={{ color: study.accentHsl }} />
+                  {d}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
-    )
+    </div>
+  )
+}
+
+/* ─── Gallery Card ──────────────────────────────────────────────── */
+
+function GalleryCard({
+  study,
+  layout,
+  onClick,
+}: {
+  study: CaseStudy
+  layout: "tall" | "wide" | "square"
+  onClick: () => void
+}) {
+  const heightClass = layout === "tall" ? "row-span-2" : layout === "wide" ? "col-span-2" : ""
+
+  return (
+    <button
+      onClick={onClick}
+      className={`group relative overflow-hidden rounded-xl text-left transition-all hover:shadow-lg ${heightClass}`}
+      style={{ border: "1px solid hsl(220, 13%, 90%)" }}
+    >
+      <div className={`relative ${layout === "tall" ? "h-full min-h-[280px]" : layout === "wide" ? "h-44" : "h-40"}`}>
+        <div className={`absolute inset-0 bg-gradient-to-br ${study.gradient} transition-transform duration-500 group-hover:scale-105`}>
+          {/* Decorative elements */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute h-24 w-24 rounded-full animate-pulse" style={{ background: "hsla(0, 0%, 100%, 0.06)", animationDuration: "3s" }} />
+            <div className="absolute h-14 w-14 rounded-lg animate-spin" style={{ background: "hsla(0, 0%, 100%, 0.04)", animationDuration: "6s" }} />
+          </div>
+        </div>
+        {/* Overlay on hover */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+          <div
+            className="flex h-10 w-10 items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 scale-75 group-hover:scale-100"
+            style={{ background: "hsla(0, 0%, 100%, 0.9)" }}
+          >
+            <Eye className="h-4 w-4" style={{ color: "hsl(220, 9%, 20%)" }} />
+          </div>
+        </div>
+        {/* Info overlay at bottom */}
+        <div
+          className="absolute bottom-0 left-0 right-0 p-4"
+          style={{ background: "linear-gradient(to top, hsla(0,0%,0%,0.7), transparent)" }}
+        >
+          <div className="flex items-end justify-between">
+            <div>
+              <h3 className="text-sm font-bold text-white">{study.title}</h3>
+              <p className="text-[11px] text-white/70 mt-0.5">{study.client} &middot; {study.year}</p>
+            </div>
+            <div className="flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium text-white" style={{ background: "hsla(0,0%,100%,0.2)" }}>
+              <Clock className="h-2.5 w-2.5" />
+              {study.duration}
+            </div>
+          </div>
+          <div className="flex gap-1 mt-2">
+            {study.tags.slice(0, 2).map((tag) => (
+              <span key={tag} className="rounded-full px-2 py-0.5 text-[9px] font-medium text-white/80" style={{ background: "hsla(0,0%,100%,0.15)" }}>
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </button>
+  )
+}
+
+/* ─── Main Motion App ───────────────────────────────────────────── */
+
+const galleryLayouts: ("tall" | "wide" | "square")[] = ["tall", "wide", "square", "square", "tall"]
+
+export function MotionApp() {
+  const [selected, setSelected] = useState<CaseStudy | null>(null)
+
+  if (selected) {
+    return <CaseStudyDetail study={selected} onBack={() => setSelected(null)} />
   }
 
   return (
     <div className="flex h-full flex-col">
       {/* Toolbar */}
       <div
-        className="flex items-center justify-between px-4 py-2"
+        className="flex items-center justify-between px-4 py-2 flex-shrink-0"
         style={{ background: "hsl(220, 14%, 96%)", borderBottom: "1px solid hsl(220, 13%, 88%)" }}
       >
         <span className="flex items-center gap-1.5 text-xs font-medium" style={{ color: "hsl(220, 9%, 46%)" }}>
           <Layers className="h-3.5 w-3.5" />
-          {motionProjects.length} motion projects
+          {caseStudies.length} Case Studies
+        </span>
+        <span className="text-[10px] font-medium uppercase tracking-wider" style={{ color: "hsl(220, 9%, 56%)" }}>
+          Motion Design Portfolio
         </span>
       </div>
 
-      {/* Grid */}
+      {/* Bento gallery grid */}
       <div className="flex-1 overflow-auto p-4">
-        <div className="grid grid-cols-2 gap-4">
-          {motionProjects.map((project) => {
-            const isPlaying = playingId === project.id
-            return (
-              <button
-                key={project.id}
-                onClick={() => setSelected(project)}
-                className="group flex flex-col rounded-xl text-left transition-all hover:shadow-md overflow-hidden"
-                style={{ border: "1px solid hsl(220, 13%, 90%)" }}
-              >
-                {/* Thumbnail with play */}
-                <div className="relative h-32">
-                  <AnimatedPreview project={project} isPlaying={isPlaying} />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/10 transition-colors">
-                    <div
-                      className="flex h-10 w-10 items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                      style={{ background: "hsla(0, 0%, 100%, 0.85)" }}
-                    >
-                      <Play className="h-4 w-4 ml-0.5" style={{ color: "hsl(220, 9%, 20%)" }} />
-                    </div>
-                  </div>
-                  <span
-                    className="absolute bottom-2 right-2 rounded px-1.5 py-0.5 text-[10px] font-medium text-white"
-                    style={{ background: "hsla(0, 0%, 0%, 0.6)", backdropFilter: "blur(4px)" }}
-                  >
-                    {project.duration}
-                  </span>
-                </div>
-
-                {/* Info */}
-                <div className="p-3">
-                  <h3 className="mb-0.5 text-sm font-semibold" style={{ color: "hsl(220, 9%, 12%)" }}>
-                    {project.title}
-                  </h3>
-                  <p className="text-xs" style={{ color: "hsl(220, 9%, 46%)" }}>
-                    {project.description}
-                  </p>
-                  <div className="mt-2 flex gap-1">
-                    {project.tags.slice(0, 2).map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded px-1.5 py-0.5 text-[10px]"
-                        style={{ background: "hsl(220, 14%, 94%)", color: "hsl(220, 9%, 46%)" }}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </button>
-            )
-          })}
+        <div className="grid grid-cols-3 auto-rows-[140px] gap-3">
+          {caseStudies.map((study, i) => (
+            <GalleryCard
+              key={study.id}
+              study={study}
+              layout={galleryLayouts[i % galleryLayouts.length]}
+              onClick={() => setSelected(study)}
+            />
+          ))}
         </div>
       </div>
     </div>

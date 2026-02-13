@@ -83,8 +83,8 @@ const APP_CONFIG: Record<
   motion: {
     title: "Motion Design",
     component: <MotionApp />,
-    defaultSize: { width: 740, height: 540 },
-    defaultPosition: { x: 100, y: 60 },
+    defaultSize: { width: 820, height: 580 },
+    defaultPosition: { x: 80, y: 50 },
   },
   showreel: {
     title: "Showreel 2026",
