@@ -10,9 +10,10 @@ import {
   Globe,
   Settings,
   Clapperboard,
+  Film,
 } from "lucide-react"
 
-export type AppId = "about" | "projects" | "contact" | "resume" | "terminal" | "browser" | "settings" | "motion"
+export type AppId = "about" | "projects" | "contact" | "resume" | "terminal" | "browser" | "settings" | "motion" | "showreel"
 
 interface DockItem {
   id: AppId
@@ -22,6 +23,12 @@ interface DockItem {
 }
 
 const dockItems: DockItem[] = [
+  {
+    id: "showreel",
+    label: "Showreel",
+    icon: <Film className="h-6 w-6" />,
+    color: "bg-gradient-to-br from-slate-700 to-slate-900",
+  },
   {
     id: "about",
     label: "About Me",

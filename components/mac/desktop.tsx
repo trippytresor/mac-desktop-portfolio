@@ -12,6 +12,7 @@ import { TerminalApp } from "./apps/terminal-app"
 import { BrowserApp } from "./apps/browser-app"
 import { SettingsApp } from "./apps/settings-app"
 import { MotionApp } from "./apps/motion-app"
+import { ShowreelApp } from "./apps/showreel-app"
 import {
   User,
   FolderOpen,
@@ -19,6 +20,7 @@ import {
   Mail,
   HardDrive,
   Clapperboard,
+  Film,
 } from "lucide-react"
 
 interface WindowState {
@@ -84,44 +86,56 @@ const APP_CONFIG: Record<
     defaultSize: { width: 740, height: 540 },
     defaultPosition: { x: 100, y: 60 },
   },
+  showreel: {
+    title: "Showreel 2026",
+    component: <ShowreelApp />,
+    defaultSize: { width: 680, height: 460 },
+    defaultPosition: { x: 180, y: 80 },
+  },
 }
 
 const INITIAL_DESKTOP_ICONS: { id: AppId; label: string; icon: React.ReactNode; defaultPos: { x: number; y: number } }[] = [
   {
+    id: "showreel",
+    label: "Showreel",
+    icon: <Film className="h-8 w-8" />,
+    defaultPos: { x: -100, y: 40 },
+  },
+  {
     id: "motion",
     label: "Motion Design",
     icon: <Clapperboard className="h-8 w-8" />,
-    defaultPos: { x: -100, y: 40 },
+    defaultPos: { x: -100, y: 130 },
   },
   {
     id: "about",
     label: "About Me",
     icon: <User className="h-8 w-8" />,
-    defaultPos: { x: -100, y: 130 },
+    defaultPos: { x: -100, y: 220 },
   },
   {
     id: "projects",
     label: "Projects",
     icon: <FolderOpen className="h-8 w-8" />,
-    defaultPos: { x: -100, y: 220 },
+    defaultPos: { x: -100, y: 310 },
   },
   {
     id: "resume",
     label: "Resume.pdf",
     icon: <FileText className="h-8 w-8" />,
-    defaultPos: { x: -100, y: 310 },
+    defaultPos: { x: -100, y: 400 },
   },
   {
     id: "contact",
     label: "Contact",
     icon: <Mail className="h-8 w-8" />,
-    defaultPos: { x: -100, y: 400 },
+    defaultPos: { x: -100, y: 490 },
   },
   {
     id: "browser",
     label: "Macintosh HD",
     icon: <HardDrive className="h-8 w-8" />,
-    defaultPos: { x: -100, y: 490 },
+    defaultPos: { x: -100, y: 580 },
   },
 ]
 
@@ -219,8 +233,10 @@ function DraggableIcon({
 }
 
 export function Desktop() {
-  const [windows, setWindows] = useState<WindowState[]>([])
-  const [nextZIndex, setNextZIndex] = useState(10)
+  const [windows, setWindows] = useState<WindowState[]>([
+    { id: "showreel", title: APP_CONFIG.showreel.title, zIndex: 10 },
+  ])
+  const [nextZIndex, setNextZIndex] = useState(11)
 
   const activeApp = windows.length > 0
     ? APP_CONFIG[windows.reduce((a, b) => (a.zIndex > b.zIndex ? a : b)).id]?.title || "Finder"
