@@ -63,18 +63,18 @@ export function AboutApp() {
                 color: "white",
               }}
             >
-              JD
+              TN
             </div>
             <div>
               <h1 className="text-2xl font-bold" style={{ color: "hsl(220, 9%, 12%)" }}>
-                John Doe
+                Treasure Ngonyama
               </h1>
               <p className="text-sm" style={{ color: "hsl(220, 9%, 46%)" }}>
-                Full-Stack Developer & Designer
+                Motion Designer & Creative Developer
               </p>
               <div className="mt-1 flex items-center gap-1 text-xs" style={{ color: "hsl(220, 9%, 46%)" }}>
                 <MapPin className="h-3 w-3" />
-                San Francisco, CA
+                Johannesburg, South Africa
               </div>
             </div>
           </div>
@@ -84,23 +84,23 @@ export function AboutApp() {
             <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider" style={{ color: "hsl(220, 9%, 46%)" }}>
               About
             </h2>
-            <p className="text-[14px] leading-relaxed" style={{ color: "hsl(220, 9%, 25%)" }}>
-              I&apos;m a passionate developer who loves crafting beautiful, performant web experiences.
-              With 5+ years of experience building modern applications, I specialize in React, Next.js,
-              and TypeScript. I believe in clean code, thoughtful design, and building products that
-              make a real impact.
-            </p>
+            <div className="text-[14px] leading-relaxed space-y-4" style={{ color: "hsl(220, 9%, 25%)" }}>
+              <p>Hello! My Name is Treasure.</p>
+              <p>I’m a designer with a love for cinema, synth music and storytelling.</p>
+              <p>I work for brands, social and TV specialising in designing for motion and web.</p>
+              <p>I live in Johannesburg, South Africa but im originaly from the coast. When I'm not designing, you can find me cruising on my skateboard, trying to learn the bass or taking a nap.</p>
+            </div>
           </section>
 
           {/* Skills */}
           <section className="mb-8">
             <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider" style={{ color: "hsl(220, 9%, 46%)" }}>
-              Tech Stack
+              Creative Stack
             </h2>
             <div className="flex flex-wrap gap-2">
               {[
-                "React", "Next.js", "TypeScript", "Node.js", "Tailwind CSS",
-                "PostgreSQL", "GraphQL", "Docker", "AWS", "Figma",
+                "After Effects", "Cinema 4D", "Figma", "Premiere Pro",
+                "React", "Next.js", "TypeScript", "Tailwind CSS",
               ].map((skill) => (
                 <span
                   key={skill}
@@ -127,22 +127,22 @@ export function AboutApp() {
               <div className="flex flex-col gap-4">
                 {[
                   {
-                    role: "Senior Frontend Engineer",
-                    company: "TechCorp",
+                    role: "Lead Motion Designer",
+                    company: "CreativeStudio, Johannesburg",
                     period: "2023 - Present",
-                    desc: "Leading frontend architecture and mentoring a team of 5 engineers. Optimized core web vitals by 40%.",
+                    desc: "Directing motion identity for global brands and leading a team of designers to deliver high-end TV commercials.",
                   },
                   {
-                    role: "Full-Stack Developer",
-                    company: "StartupXYZ",
+                    role: "Senior Motion Graphics Artist",
+                    company: "MediaHouse, Cape Town",
                     period: "2021 - 2023",
-                    desc: "Built and scaled the core product from 0 to 50K users. Implemented real-time collaboration features.",
+                    desc: "Created award-winning motion graphics for broadcast television and integrated 3D elements into 2D workflows.",
                   },
                   {
-                    role: "Frontend Developer",
-                    company: "DesignStudio",
+                    role: "Junior Designer",
+                    company: "DesignLab, Durban",
                     period: "2019 - 2021",
-                    desc: "Created pixel-perfect interfaces for enterprise clients including Fortune 500 companies.",
+                    desc: "Assisted in the creation of branding systems and social content for diverse digital platforms.",
                   },
                 ].map((job) => (
                   <div
@@ -180,10 +180,10 @@ export function AboutApp() {
               <div className="flex flex-col gap-4">
                 {[
                   {
-                    degree: "B.S. in Computer Science",
-                    school: "University of Technology",
+                    degree: "B.A. Graphic Design",
+                    school: "University of Johannesburg",
                     period: "2015 - 2019",
-                    desc: "Focused on software engineering and human-computer interaction. Graduated with honors.",
+                    desc: "Focused on visual communication, motion graphics, and interactive design.",
                   },
                 ].map((edu) => (
                   <div
@@ -221,20 +221,20 @@ export function AboutApp() {
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 {[
                   {
-                    category: "Frontend",
-                    skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Redux", "Framer Motion"],
-                  },
-                  {
-                    category: "Backend",
-                    skills: ["Node.js", "Express", "PostgreSQL", "Prisma", "Redis", "GraphQL"],
-                  },
-                  {
-                    category: "Tools & DevOps",
-                    skills: ["Git", "Docker", "AWS", "Vercel", "CI/CD", "Jest"],
+                    category: "Motion",
+                    skills: ["After Effects", "Cinema 4D", "Premiere Pro", "Lottie", "Animation", "VFX"],
                   },
                   {
                     category: "Design",
-                    skills: ["Figma", "UI/UX Design", "Responsive Design", "Prototyping"],
+                    skills: ["Figma", "UI/UX Design", "Branding", "Typography", "Illustration"],
+                  },
+                  {
+                    category: "Web",
+                    skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Three.js", "Framer Motion"],
+                  },
+                  {
+                    category: "Tools",
+                    skills: ["Git", "Blender", "DaVinci Resolve", "Adobe Creative Cloud"],
                   },
                 ].map((group) => (
                   <div key={group.category} className="rounded-lg p-5" style={{ border: "1px solid hsl(220, 13%, 90%)", background: "white" }}>

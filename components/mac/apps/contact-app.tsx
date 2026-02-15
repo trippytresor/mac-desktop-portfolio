@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Send, Github, Linkedin, Twitter, Mail, CheckCircle2 } from "lucide-react"
+import { Send, Github, Linkedin, Instagram, Mail, CheckCircle2 } from "lucide-react"
 
 export function ContactApp() {
   const [sent, setSent] = useState(false)
@@ -25,10 +25,10 @@ export function ContactApp() {
 
         <div className="flex flex-col gap-3">
           {[
-            { icon: <Mail className="h-4 w-4" />, label: "Email", value: "hello@johndoe.dev" },
-            { icon: <Github className="h-4 w-4" />, label: "GitHub", value: "@johndoe" },
-            { icon: <Linkedin className="h-4 w-4" />, label: "LinkedIn", value: "in/johndoe" },
-            { icon: <Twitter className="h-4 w-4" />, label: "Twitter", value: "@johndoe" },
+            { icon: <Mail className="h-4 w-4" />, label: "Email", value: "treasurengonyama@gmail.com" },
+            { icon: <Instagram className="h-4 w-4" />, label: "Instagram", value: "@treasures.lab" },
+            { icon: <Linkedin className="h-4 w-4" />, label: "LinkedIn", value: "in/treasure-ngonyama" },
+            { icon: <Github className="h-4 w-4" />, label: "GitHub", value: "@treasurengonyama" },
           ].map((item) => (
             <a
               key={item.label}

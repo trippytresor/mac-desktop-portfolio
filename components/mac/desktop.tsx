@@ -70,7 +70,7 @@ const APP_CONFIG: Record<
     defaultPosition: { x: 180, y: 120 },
   },
   browser: {
-    title: "Safari - johndoe.dev",
+    title: "Safari - treasure.lab",
     component: <BrowserApp />,
     defaultSize: { width: 800, height: 560 },
     defaultPosition: { x: 120, y: 50 },
@@ -88,7 +88,7 @@ const APP_CONFIG: Record<
     defaultPosition: { x: 80, y: 50 },
   },
   showreel: {
-    title: "Showreel 2026",
+    title: "Showreel 2024",
     component: <ShowreelApp />,
     defaultSize: { width: 680, height: 460 },
     defaultPosition: { x: 180, y: 80 },
@@ -315,7 +315,7 @@ export function Desktop() {
       {/* Wallpaper */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/wallpaper.jpg')" }}
+        style={{ backgroundImage: "url('/images/wallpaper.png')" }}
         aria-hidden="true"
       />
 

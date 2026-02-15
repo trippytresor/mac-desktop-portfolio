@@ -8,12 +8,12 @@ interface Line {
 }
 
 const ASCII_ART = `
-     ___  ____  
-    |_ _|/ ___| 
-     | | \\___ \\ 
-     | |  ___) |
-    |___|____/ 
-  John Doe - Developer
+  _____
+ |_   _| __ ___  __ _ ___ _   _ _ __ ___
+   | || '__/ _ \\/ _\` / __| | | | '__/ _ \\
+   | || | |  __/ (_| \\__ \\ |_| | | |  __/
+   |_||_|  \\___|\\__,_|___/\\__,_|_|  \\___|
+  Treasure Ngonyama - Motion & Web
 `
 
 const COMMANDS: Record<string, string> = {
@@ -27,32 +27,26 @@ const COMMANDS: Record<string, string> = {
   whoami    - Who am I?
   neofetch  - System info`,
 
-  about: `Hi! I'm John Doe, a full-stack developer based in San Francisco.
-I love building modern web applications with React, Next.js, and TypeScript.
-I'm passionate about clean code, great UX, and open source.`,
+  about: `Hello! My Name is Treasure.
+I’m a designer with a love for cinema, synth music and storytelling.
+I work for brands, social and TV specialising in designing for motion and web.`,
 
-  skills: `Frontend:  React, Next.js, TypeScript, Tailwind CSS
-Backend:   Node.js, Python, Go
-Database:  PostgreSQL, Redis, MongoDB
-DevOps:    Docker, AWS, Vercel, GitHub Actions
-Design:    Figma, Adobe Creative Suite`,
+  skills: `Design:    Motion Graphics, UI/UX, Typography, 3D
+Frontend:  Next.js, React, TypeScript, Tailwind CSS
+Tools:     After Effects, Cinema 4D, Figma, Premiere Pro`,
 
-  projects: `1. CloudSync    - Real-time collaboration platform    [Next.js, WebSocket]
-2. PixelForge   - AI-powered image editing tool      [React, TensorFlow.js]
-3. DevMetrics   - Developer analytics dashboard      [TypeScript, D3.js]
-4. NoteFlow     - AI-assisted markdown notes          [Next.js, AI SDK]
-5. FormCraft    - Drag-and-drop form builder         [React, DnD Kit]
-6. ShipFast     - SaaS boilerplate                   [Next.js, Stripe]`,
+  projects: `1. Showreel 2024 - Selected motion works
+2. Brand Motion  - Identity systems for TV
+3. Web Design    - Interactive experiences
+4. Social Media  - Content for global brands`,
 
-  contact: `Email:     hello@johndoe.dev
-GitHub:    github.com/johndoe
-LinkedIn:  linkedin.com/in/johndoe
-Twitter:   twitter.com/johndoe`,
+  contact: `Email:     treasurengonyama@gmail.com
+Instagram: @treasures.lab`,
 
-  whoami: "johndoe - Full-Stack Developer & Designer",
+  whoami: "treasure - Motion Designer & Creative Developer",
 
-  neofetch: `johndoe@portfolio
------------------
+  neofetch: `treasure@portfolio
+------------------
 OS:       macOS Sequoia 15.3
 Host:     Portfolio v2.0
 Kernel:   Next.js 16
@@ -86,7 +80,7 @@ export function TerminalApp() {
 
     const newLines: Line[] = [
       ...lines,
-      { type: "input", content: `~ johndoe $ ${input}` },
+      { type: "input", content: `~ treasure $ ${input}` },
     ]
 
     if (cmd === "clear") {
@@ -142,7 +136,7 @@ export function TerminalApp() {
         ))}
 
         <form onSubmit={handleSubmit} className="flex items-center">
-          <span style={{ color: "hsl(142, 71%, 60%)" }}>~ johndoe $&nbsp;</span>
+          <span style={{ color: "hsl(142, 71%, 60%)" }}>~ treasure $&nbsp;</span>
           <input
             ref={inputRef}
             value={input}

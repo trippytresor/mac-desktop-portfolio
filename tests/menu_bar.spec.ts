@@ -5,8 +5,8 @@ test.describe('Menu Bar', () => {
     await page.goto('http://localhost:3000');
   });
 
-  test('should display Showreel 2026 menu by default', async ({ page }) => {
-    const activeAppName = page.locator('header[role="menubar"] >> text=Showreel 2026').first();
+  test('should display Showreel 2024 menu by default', async ({ page }) => {
+    const activeAppName = page.locator('header[role="menubar"] >> text=Showreel 2024').first();
     await expect(activeAppName).toBeVisible();
   });
 

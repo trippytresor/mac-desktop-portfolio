@@ -16,7 +16,7 @@ export function ResumeApp() {
         <div className="flex items-center gap-2">
           <FileText className="h-4 w-4" style={{ color: "hsl(0, 72%, 51%)" }} />
           <span className="text-xs font-medium" style={{ color: "hsl(220, 9%, 30%)" }}>
-            Resume_JohnDoe_2026.pdf
+            Resume_TreasureNgonyama.pdf
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -76,13 +76,13 @@ export function ResumeApp() {
             {/* Header */}
             <div className="mb-6 text-center">
               <h1 className="text-2xl font-bold" style={{ color: "hsl(220, 9%, 12%)" }}>
-                JOHN DOE
+                TREASURE NGONYAMA
               </h1>
               <p className="mt-1 text-sm" style={{ color: "hsl(220, 9%, 46%)" }}>
-                Full-Stack Developer
+                Motion Designer & Creative Developer
               </p>
               <p className="mt-1 text-xs" style={{ color: "hsl(220, 9%, 55%)" }}>
-                San Francisco, CA | hello@johndoe.dev | github.com/johndoe
+                Johannesburg, South Africa | treasurengonyama@gmail.com | @treasures.lab
               </p>
             </div>
 
@@ -94,9 +94,9 @@ export function ResumeApp() {
                 Summary
               </h2>
               <p className="text-xs leading-relaxed" style={{ color: "hsl(220, 9%, 30%)" }}>
-                Experienced full-stack developer with 5+ years building scalable web applications.
-                Proficient in React, Next.js, TypeScript, and Node.js. Passionate about clean code,
-                accessibility, and delivering exceptional user experiences.
+                Creative Motion Designer and Frontend Developer with a passion for cinematic storytelling
+                and interactive web experiences. Specializing in branding, social media content, and
+                TV motion graphics. Expert in bringing designs to life through motion.
               </p>
             </section>
 
@@ -107,32 +107,32 @@ export function ResumeApp() {
               </h2>
               {[
                 {
-                  title: "Senior Frontend Engineer",
-                  company: "TechCorp, San Francisco",
+                  title: "Lead Motion Designer",
+                  company: "CreativeStudio, Johannesburg",
                   date: "Jan 2023 - Present",
                   bullets: [
-                    "Led migration of legacy codebase to Next.js, improving performance by 40%",
-                    "Architected component library used across 3 product teams",
-                    "Mentored 5 junior developers through code reviews and pair programming",
+                    "Directed motion identity for major global brands, increasing engagement by 50%",
+                    "Developed automated motion templates for social media teams",
+                    "Leading a team of 3 designers to deliver high-end TV commercials",
                   ],
                 },
                 {
-                  title: "Full-Stack Developer",
-                  company: "StartupXYZ, Remote",
+                  title: "Senior Motion Graphics Artist",
+                  company: "MediaHouse, Cape Town",
                   date: "Mar 2021 - Dec 2022",
                   bullets: [
-                    "Built core product features that drove growth from 0 to 50K users",
-                    "Designed and implemented RESTful APIs serving 1M+ requests/day",
-                    "Reduced deployment time by 60% through CI/CD pipeline optimization",
+                    "Created award-winning motion graphics for broadcast television",
+                    "Integrated 3D elements into 2D workflows using Cinema 4D",
+                    "Optimized render times by 30% through advanced workflow techniques",
                   ],
                 },
                 {
-                  title: "Frontend Developer",
-                  company: "DesignStudio, New York",
+                  title: "Junior Designer",
+                  company: "DesignLab, Durban",
                   date: "Jun 2019 - Feb 2021",
                   bullets: [
-                    "Delivered 15+ client projects with pixel-perfect implementations",
-                    "Improved Core Web Vitals scores by average of 35% across projects",
+                    "Assisted in the creation of branding systems and social content",
+                    "Ensured pixel-perfect delivery across all digital platforms",
                   ],
                 },
               ].map((job) => (
@@ -170,10 +170,10 @@ export function ResumeApp() {
               <div className="flex items-start justify-between">
                 <div>
                   <h3 className="text-xs font-bold" style={{ color: "hsl(220, 9%, 12%)" }}>
-                    B.S. Computer Science
+                    B.A. Graphic Design
                   </h3>
                   <p className="text-xs italic" style={{ color: "hsl(220, 9%, 46%)" }}>
-                    University of California, Berkeley
+                    University of Johannesburg
                   </p>
                 </div>
                 <span className="text-[10px]" style={{ color: "hsl(220, 9%, 46%)" }}>
@@ -189,9 +189,9 @@ export function ResumeApp() {
               </h2>
               <div className="flex flex-wrap gap-1.5">
                 {[
-                  "React", "Next.js", "TypeScript", "JavaScript", "Node.js",
-                  "Python", "PostgreSQL", "Redis", "GraphQL", "REST APIs",
-                  "Docker", "AWS", "Git", "Figma", "Tailwind CSS",
+                  "After Effects", "Cinema 4D", "Figma", "Premiere Pro",
+                  "React", "Next.js", "TypeScript", "Tailwind CSS",
+                  "Motion Graphics", "UI/UX", "3D Animation", "Branding",
                 ].map((skill) => (
                   <span
                     key={skill}

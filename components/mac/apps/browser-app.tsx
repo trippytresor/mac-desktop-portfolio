@@ -4,9 +4,9 @@ import { useState } from "react"
 import { ChevronLeft, ChevronRight, RotateCw, Lock, Plus, Star, ExternalLink } from "lucide-react"
 
 const BOOKMARKS = [
-  { name: "GitHub", url: "github.com/johndoe" },
-  { name: "LinkedIn", url: "linkedin.com/in/johndoe" },
-  { name: "Portfolio Blog", url: "johndoe.dev/blog" },
+  { name: "GitHub", url: "github.com/treasurengonyama" },
+  { name: "LinkedIn", url: "linkedin.com/in/treasurengonyama" },
+  { name: "Portfolio Blog", url: "treasure.lab/blog" },
 ]
 
 const BLOG_POSTS = [
@@ -41,7 +41,7 @@ const BLOG_POSTS = [
 ]
 
 export function BrowserApp() {
-  const [url, setUrl] = useState("johndoe.dev/blog")
+  const [url, setUrl] = useState("treasure.lab/blog")
 
   return (
     <div className="flex h-full flex-col">
@@ -107,7 +107,7 @@ export function BrowserApp() {
           {/* Blog header */}
           <div className="mb-10">
             <h1 className="text-2xl font-bold" style={{ color: "hsl(220, 9%, 12%)" }}>
-              johndoe.dev
+              treasure.lab
             </h1>
             <p className="mt-1 text-sm" style={{ color: "hsl(220, 9%, 46%)" }}>
               Thoughts on web development, design, and engineering.
