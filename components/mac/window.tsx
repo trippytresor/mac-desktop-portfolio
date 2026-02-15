@@ -8,8 +8,10 @@ interface WindowProps {
   children: ReactNode
   isActive: boolean
   zIndex: number
+  isMinimized?: boolean
   onClose: () => void
   onFocus: () => void
+  onMinimize?: () => void
   defaultPosition?: { x: number; y: number }
   defaultSize?: { width: number; height: number }
   minSize?: { width: number; height: number }
@@ -21,8 +23,10 @@ export function Window({
   children,
   isActive,
   zIndex,
+  isMinimized = false,
   onClose,
   onFocus,
+  onMinimize,
   defaultPosition,
   defaultSize = { width: 700, height: 500 },
   minSize = { width: 400, height: 300 },
@@ -32,7 +36,6 @@ export function Window({
   )
   const [size, setSize] = useState(defaultSize)
   const [isMaximized, setIsMaximized] = useState(false)
-  const [isMinimized, setIsMinimized] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const [isResizing, setIsResizing] = useState(false)
   const [preMaxState, setPreMaxState] = useState({ position, size })
@@ -79,9 +82,20 @@ export function Window({
     const handleMove = (e: MouseEvent) => {
       const dx = e.clientX - dragRef.current.startX
       const dy = e.clientY - dragRef.current.startY
+
+      const newX = dragRef.current.startPosX + dx
+      const newY = dragRef.current.startPosY + dy
+
+      // Clamp Y to prevent title bar from going under Menu Bar (28px)
+      // and keep at least 40px of title bar visible at the bottom
+      const clampedY = Math.max(28, Math.min(newY, window.innerHeight - 40))
+
+      // Clamp X to keep at least 40px of title bar visible on the sides
+      const clampedX = Math.max(-size.width + 40, Math.min(newX, window.innerWidth - 40))
+
       setPosition({
-        x: dragRef.current.startPosX + dx,
-        y: Math.max(28, dragRef.current.startPosY + dy),
+        x: clampedX,
+        y: clampedY,
       })
     }
     const handleUp = () => setIsDragging(false)
@@ -132,23 +146,22 @@ export function Window({
   }
 
   const handleMinimize = () => {
-    setIsMinimized(!isMinimized)
+    onMinimize?.()
   }
-
-  if (isMinimized) return null
 
   return (
     <div
       data-window-id={id}
       className={`absolute flex flex-col overflow-hidden transition-shadow duration-200 ${
         isMaximized ? "rounded-none" : "rounded-xl"
-      }`}
+      } ${isMinimized ? "invisible pointer-events-none scale-95 opacity-0" : "visible scale-100 opacity-100"}`}
       style={{
         left: position.x,
         top: position.y,
         width: size.width,
         height: size.height,
         zIndex,
+        transition: "transform 0.3s cubic-bezier(0.2, 0, 0, 1), opacity 0.3s, scale 0.3s",
         boxShadow: isActive
           ? "0 22px 70px 4px hsla(0,0%,0%,0.25), 0 0 0 1px hsla(220, 13%, 82%, 0.5)"
           : "0 8px 30px hsla(0,0%,0%,0.12), 0 0 0 1px hsla(220, 13%, 82%, 0.4)",
