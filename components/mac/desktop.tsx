@@ -27,6 +27,7 @@ interface WindowState {
   id: AppId
   title: string
   zIndex: number
+  isMinimized: boolean
 }
 
 const APP_CONFIG: Record<
@@ -144,13 +145,17 @@ function DraggableIcon({
   label,
   icon,
   defaultPos,
+  isSelected,
   onOpen,
+  onSelect,
 }: {
   id: AppId
   label: string
   icon: React.ReactNode
   defaultPos: { x: number; y: number }
+  isSelected: boolean
   onOpen: (id: AppId) => void
+  onSelect: (id: AppId) => void
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [pos, setPos] = useState(defaultPos)
@@ -171,9 +176,18 @@ function DraggableIcon({
       if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
         dragState.current.hasMoved = true
       }
+
+      const newX = dragState.current.startPosX + dx
+      const newY = dragState.current.startPosY + dy
+
+      // Clamp to viewport, keeping icons fully visible
+      // Assuming icon width is approx 80px and height is approx 100px (including label)
+      const clampedX = Math.max(0, Math.min(newX, window.innerWidth - 80))
+      const clampedY = Math.max(28, Math.min(newY, window.innerHeight - 180)) // Account for dock height (~80px) + icon height
+
       setPos({
-        x: dragState.current.startPosX + dx,
-        y: Math.max(28, dragState.current.startPosY + dy),
+        x: clampedX,
+        y: clampedY,
       })
     }
     const handleUp = () => {
@@ -189,6 +203,8 @@ function DraggableIcon({
 
   const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault()
+    e.stopPropagation()
+    onSelect(id)
     dragState.current = {
       isDragging: true,
       hasMoved: false,
@@ -199,7 +215,8 @@ function DraggableIcon({
     }
   }
 
-  const handleDoubleClick = () => {
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
     if (!dragState.current.hasMoved) {
       onOpen(id)
     }
@@ -208,10 +225,13 @@ function DraggableIcon({
   return (
     <div
       ref={containerRef}
-      className="absolute flex flex-col items-center gap-1 rounded-lg p-2 hover:bg-white/20 transition-colors w-20 cursor-default z-[1]"
+      className={`absolute flex flex-col items-center gap-1 rounded-lg p-2 transition-colors w-20 cursor-default z-[1] ${
+        isSelected ? "bg-white/30" : "hover:bg-white/20"
+      }`}
       style={{ left: pos.x, top: pos.y }}
       onMouseDown={handleMouseDown}
       onDoubleClick={handleDoubleClick}
+      data-testid={`icon-${id}`}
     >
       <div
         className="flex h-14 w-14 items-center justify-center rounded-xl text-white"
@@ -234,12 +254,14 @@ function DraggableIcon({
 
 export function Desktop() {
   const [windows, setWindows] = useState<WindowState[]>([
-    { id: "showreel", title: APP_CONFIG.showreel.title, zIndex: 10 },
+    { id: "showreel", title: APP_CONFIG.showreel.title, zIndex: 10, isMinimized: false },
   ])
   const [nextZIndex, setNextZIndex] = useState(11)
+  const [selectedIconId, setSelectedIconId] = useState<AppId | null>(null)
 
-  const activeApp = windows.length > 0
-    ? APP_CONFIG[windows.reduce((a, b) => (a.zIndex > b.zIndex ? a : b)).id]?.title || "Finder"
+  const activeWindows = windows.filter(w => !w.isMinimized)
+  const activeApp = activeWindows.length > 0
+    ? APP_CONFIG[activeWindows.reduce((a, b) => (a.zIndex > b.zIndex ? a : b)).id]?.title || "Finder"
     : "Finder"
 
   const openWindow = useCallback(
@@ -248,7 +270,7 @@ export function Desktop() {
         const exists = prev.find((w) => w.id === id)
         if (exists) {
           return prev.map((w) =>
-            w.id === id ? { ...w, zIndex: nextZIndex } : w
+            w.id === id ? { ...w, zIndex: nextZIndex, isMinimized: false } : w
           )
         }
         return [
@@ -257,6 +279,7 @@ export function Desktop() {
             id,
             title: APP_CONFIG[id].title,
             zIndex: nextZIndex,
+            isMinimized: false,
           },
         ]
       })
@@ -273,13 +296,19 @@ export function Desktop() {
     (id: AppId) => {
       setWindows((prev) =>
         prev.map((w) =>
-          w.id === id ? { ...w, zIndex: nextZIndex } : w
+          w.id === id ? { ...w, zIndex: nextZIndex, isMinimized: false } : w
         )
       )
       setNextZIndex((z) => z + 1)
     },
     [nextZIndex]
   )
+
+  const minimizeWindow = useCallback((id: AppId) => {
+    setWindows((prev) =>
+      prev.map((w) => (w.id === id ? { ...w, isMinimized: true } : w))
+    )
+  }, [])
 
   return (
     <div className="relative h-screen w-screen overflow-hidden select-none">
@@ -294,23 +323,31 @@ export function Desktop() {
       <MenuBar activeApp={activeApp} />
 
       {/* Desktop Icons (draggable) */}
-      {INITIAL_DESKTOP_ICONS.map((item) => (
-        <DraggableIcon
-          key={item.id}
-          id={item.id}
-          label={item.label}
-          icon={item.icon}
-          defaultPos={item.defaultPos}
-          onOpen={openWindow}
-        />
-      ))}
+      <div
+        className="absolute inset-0"
+        onMouseDown={() => setSelectedIconId(null)}
+      >
+        {INITIAL_DESKTOP_ICONS.map((item) => (
+          <DraggableIcon
+            key={item.id}
+            id={item.id}
+            label={item.label}
+            icon={item.icon}
+            defaultPos={item.defaultPos}
+            isSelected={selectedIconId === item.id}
+            onOpen={openWindow}
+            onSelect={setSelectedIconId}
+          />
+        ))}
+      </div>
 
       {/* Windows */}
       {windows.map((win) => {
         const config = APP_CONFIG[win.id]
         const isActive =
-          win.zIndex ===
-          Math.max(...windows.map((w) => w.zIndex))
+          !win.isMinimized &&
+          win.zIndex === Math.max(...windows.filter(w => !w.isMinimized).map((w) => w.zIndex))
+
         return (
           <Window
             key={win.id}
@@ -318,8 +355,10 @@ export function Desktop() {
             title={config.title}
             isActive={isActive}
             zIndex={win.zIndex}
+            isMinimized={win.isMinimized}
             onClose={() => closeWindow(win.id)}
             onFocus={() => focusWindow(win.id)}
+            onMinimize={() => minimizeWindow(win.id)}
             defaultPosition={config.defaultPosition}
             defaultSize={config.defaultSize}
           >
