@@ -11,15 +11,17 @@ import {
   Settings,
   Clapperboard,
   Film,
+  Instagram,
 } from "lucide-react"
 
-export type AppId = "about" | "projects" | "contact" | "resume" | "terminal" | "browser" | "settings" | "motion" | "showreel"
+export type AppId = "about" | "projects" | "contact" | "resume" | "terminal" | "browser" | "settings" | "motion" | "showreel" | "instagram"
 
 interface DockItem {
   id: AppId
   label: string
   icon: React.ReactNode
   color: string
+  url?: string
 }
 
 const dockItems: DockItem[] = [
@@ -77,6 +79,13 @@ const dockItems: DockItem[] = [
     icon: <Settings className="h-6 w-6" />,
     color: "bg-gradient-to-br from-gray-400 to-gray-600",
   },
+  {
+    id: "instagram",
+    label: "Instagram",
+    icon: <Instagram className="h-6 w-6" />,
+    color: "bg-gradient-to-br from-pink-500 via-red-500 to-yellow-500",
+    url: "https://www.instagram.com/treasures.lab/",
+  },
 ]
 
 interface DockProps {
@@ -131,7 +140,13 @@ export function Dock({ openWindows, onOpen }: DockProps) {
               </div>
             )}
             <button
-              onClick={() => onOpen(item.id)}
+              onClick={() => {
+                if (item.url) {
+                  window.open(item.url, "_blank")
+                } else {
+                  onOpen(item.id)
+                }
+              }}
               className={`${item.color} relative flex items-center justify-center rounded-xl text-white shadow-lg transition-transform duration-200 ease-out cursor-default`}
               style={{
                 width: `${44 * scale}px`,

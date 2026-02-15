@@ -6,7 +6,7 @@ test('app interactivity', async ({ page }) => {
 
   // 1. Open About Me
   await page.getByLabel('Open About Me').click();
-  await expect(page.getByLabel('About Me', { exact: true }).getByText('John Doe')).toBeVisible();
+  await expect(page.getByLabel('About Me', { exact: true }).getByText('Treasure Ngonyama')).toBeVisible();
 
   // 2. Click Experience
   await page.getByRole('button', { name: 'Experience' }).click();

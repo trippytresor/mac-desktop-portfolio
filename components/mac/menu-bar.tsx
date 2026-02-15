@@ -25,10 +25,10 @@ const MENU_MAP: Record<string, string[]> = {
   "Contact": ["File", "Edit", "View", "Window", "Help"],
   "Resume Preview": ["File", "Edit", "View", "Window", "Help"],
   "Terminal": ["Shell", "Edit", "View", "Window", "Help"],
-  "Safari - johndoe.dev": ["File", "Edit", "View", "History", "Bookmarks", "Window", "Help"],
+  "Safari - treasure.lab": ["File", "Edit", "View", "History", "Bookmarks", "Window", "Help"],
   "System Settings": ["View", "Edit", "Window", "Help"],
   "Motion Design": ["File", "Edit", "Object", "View", "Window", "Help"],
-  "Showreel 2026": ["File", "Edit", "View", "Window", "Help"],
+  "Showreel 2024": ["File", "Edit", "View", "Window", "Help"],
 }
 
 export function MenuBar({ activeApp }: { activeApp: string }) {

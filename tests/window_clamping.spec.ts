@@ -6,7 +6,7 @@ test.describe('Window Clamping', () => {
   });
 
   test('should not allow dragging window above menu bar', async ({ page }) => {
-    const windowTitle = page.getByText('Showreel 2026').first();
+    const windowTitle = page.getByText('Showreel 2024').first();
     const windowHandle = page.locator('[data-window-id="showreel"]');
 
     // Get initial position
@@ -26,7 +26,7 @@ test.describe('Window Clamping', () => {
   });
 
   test('should not allow dragging window completely off-screen (sides)', async ({ page }) => {
-    const windowTitle = page.getByText('Showreel 2026').first();
+    const windowTitle = page.getByText('Showreel 2024').first();
     const windowHandle = page.locator('[data-window-id="showreel"]');
 
     const viewport = page.viewportSize();
