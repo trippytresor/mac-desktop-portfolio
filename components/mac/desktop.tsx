@@ -13,6 +13,7 @@ import { BrowserApp } from "./apps/browser-app"
 import { SettingsApp } from "./apps/settings-app"
 import { MotionApp } from "./apps/motion-app"
 import { ShowreelApp } from "./apps/showreel-app"
+import { PhotosApp } from "./apps/photos-app"
 import {
   User,
   FolderOpen,
@@ -92,6 +93,12 @@ const APP_CONFIG: Record<
     component: <ShowreelApp />,
     defaultSize: { width: 680, height: 460 },
     defaultPosition: { x: 180, y: 80 },
+  },
+  photos: {
+    title: "Photos",
+    component: <PhotosApp />,
+    defaultSize: { width: 800, height: 600 },
+    defaultPosition: { x: 100, y: 40 },
   },
 }
 
