@@ -8,7 +8,7 @@ const _geistMono = Geist_Mono({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Treasure Ngonyama - Portfolio',
-  description: 'Motion Designer & Creative Developer - Interactive macOS-style portfolio',
+  description: 'Motion Designer & Creative Designer - Interactive macOS-style portfolio,
 }
 
 export const viewport = {
