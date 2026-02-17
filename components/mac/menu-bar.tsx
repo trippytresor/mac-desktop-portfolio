@@ -29,6 +29,7 @@ const MENU_MAP: Record<string, string[]> = {
   "System Settings": ["View", "Edit", "Window", "Help"],
   "Motion Design": ["File", "Edit", "Object", "View", "Window", "Help"],
   "Showreel 2024": ["File", "Edit", "View", "Window", "Help"],
+  "Photos": ["File", "Edit", "View", "Window", "Help"],
 }
 
 export function MenuBar({ activeApp }: { activeApp: string }) {

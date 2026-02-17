@@ -12,9 +12,10 @@ import {
   Clapperboard,
   Film,
   Instagram,
+  Image,
 } from "lucide-react"
 
-export type AppId = "about" | "projects" | "contact" | "resume" | "terminal" | "browser" | "settings" | "motion" | "showreel" | "instagram"
+export type AppId = "about" | "projects" | "contact" | "resume" | "terminal" | "browser" | "settings" | "motion" | "showreel" | "instagram" | "photos"
 
 interface DockItem {
   id: AppId
@@ -78,6 +79,12 @@ const dockItems: DockItem[] = [
     label: "Settings",
     icon: <Settings className="h-6 w-6" />,
     color: "bg-gradient-to-br from-gray-400 to-gray-600",
+  },
+  {
+    id: "photos",
+    label: "Photos",
+    icon: <Image className="h-6 w-6" />,
+    color: "bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400",
   },
   {
     id: "instagram",
