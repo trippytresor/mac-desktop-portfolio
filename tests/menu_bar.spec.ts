@@ -34,6 +34,6 @@ test.describe('Menu Bar', () => {
   test('should show apple menu content when apple icon clicked', async ({ page }) => {
     await page.locator('header[role="menubar"] .lucide-apple').first().click();
     await expect(page.getByText('About This Mac')).toBeVisible();
-    await expect(page.getByText('Shut Down...')).toBeVisible();
+    await expect(page.getByText('System Settings...')).toBeVisible();
   });
 });
