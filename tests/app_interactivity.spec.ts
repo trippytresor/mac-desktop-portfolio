@@ -10,7 +10,7 @@ test('app interactivity', async ({ page }) => {
 
   // 2. Click Experience
   await page.getByRole('button', { name: 'Experience' }).click();
-  await expect(page.getByText('TechCorp')).toBeVisible();
+  await expect(page.getByText('CreativeStudio')).toBeVisible();
   await page.screenshot({ path: 'screenshots/about_experience.png' });
 
   // 3. Click Skills

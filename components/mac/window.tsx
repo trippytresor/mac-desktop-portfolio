@@ -170,6 +170,13 @@ export function Window({
       role="dialog"
       aria-label={title}
     >
+      {/* Overlay to prevent iframe from capturing events during drag/resize */}
+      {(isDragging || isResizing) && (
+        <div
+          className="absolute inset-0 z-[100]"
+          style={{ cursor: isResizing ? 'nwse-resize' : 'default' }}
+        />
+      )}
       {/* Title bar */}
       <div
         className="flex h-12 flex-shrink-0 items-center gap-2 px-4 select-none cursor-default"
