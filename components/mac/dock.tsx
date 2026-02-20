@@ -114,14 +114,14 @@ export function Dock({ openWindows, onOpen }: DockProps) {
 
   return (
     <nav
-      className="fixed bottom-2 left-1/2 -translate-x-1/2 z-50 flex items-end gap-1 rounded-2xl px-2 pb-1.5 pt-1.5"
+      className="fixed bottom-2 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 rounded-2xl p-2"
       style={{
         background: "hsla(0, 0%, 100%, 0.55)",
         backdropFilter: "blur(24px) saturate(180%)",
         WebkitBackdropFilter: "blur(24px) saturate(180%)",
         border: "1px solid hsla(0, 0%, 100%, 0.4)",
         boxShadow: "0 8px 32px hsla(0,0%,0%,0.12), 0 2px 8px hsla(0,0%,0%,0.08)",
-        height: "84px",
+        height: "90px",
       }}
       aria-label="Application dock"
     >
@@ -159,7 +159,7 @@ export function Dock({ openWindows, onOpen }: DockProps) {
               style={{
                 width: `${44 * scale}px`,
                 height: `${44 * scale}px`,
-                transformOrigin: "bottom",
+                transformOrigin: "center",
               }}
               aria-label={`Open ${item.label}`}
             >
