@@ -121,6 +121,7 @@ export function Dock({ openWindows, onOpen }: DockProps) {
         WebkitBackdropFilter: "blur(24px) saturate(180%)",
         border: "1px solid hsla(0, 0%, 100%, 0.4)",
         boxShadow: "0 8px 32px hsla(0,0%,0%,0.12), 0 2px 8px hsla(0,0%,0%,0.08)",
+        height: "84px",
       }}
       aria-label="Application dock"
     >
@@ -154,11 +155,10 @@ export function Dock({ openWindows, onOpen }: DockProps) {
                   onOpen(item.id)
                 }
               }}
-              className={`${item.color} relative flex items-center justify-center rounded-xl text-white shadow-lg transition-transform duration-200 ease-out cursor-default`}
+              className={`${item.color} relative flex items-center justify-center rounded-xl text-white shadow-lg transition-all duration-300 ease-out cursor-default`}
               style={{
                 width: `${44 * scale}px`,
                 height: `${44 * scale}px`,
-                marginBottom: `${(scale - 1) * 22}px`,
                 transformOrigin: "bottom",
               }}
               aria-label={`Open ${item.label}`}

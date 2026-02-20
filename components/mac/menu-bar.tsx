@@ -19,17 +19,23 @@ import {
 import { cn } from "@/lib/utils"
 
 const MENU_MAP: Record<string, string[]> = {
-  "Finder": ["File", "Edit", "View", "Go", "Window", "Help"],
-  "About Me": ["File", "Edit", "View", "Window", "Help"],
-  "Projects": ["File", "Edit", "View", "Go", "Window", "Help"],
-  "Contact": ["File", "Edit", "View", "Window", "Help"],
-  "Resume Preview": ["File", "Edit", "View", "Window", "Help"],
-  "Terminal": ["Shell", "Edit", "View", "Window", "Help"],
-  "Safari - treasure.lab": ["File", "Edit", "View", "History", "Bookmarks", "Window", "Help"],
-  "System Settings": ["View", "Edit", "Window", "Help"],
-  "Motion Design": ["File", "Edit", "Object", "View", "Window", "Help"],
-  "Showreel 2024": ["File", "Edit", "View", "Window", "Help"],
-  "Photos": ["File", "Edit", "View", "Window", "Help"],
+  "Finder": ["Projects", "Edit", "View", "Go", "Window"],
+  "About Me": ["Projects", "Edit", "View", "Window"],
+  "Projects": ["Projects", "Edit", "View", "Go", "Window"],
+  "Contact": ["Projects", "Edit", "View", "Window"],
+  "Resume Preview": ["Projects", "Edit", "View", "Window"],
+  "Terminal": ["Shell", "Edit", "View", "Window"],
+  "Safari - treasure.lab": ["Projects", "Edit", "View", "History", "Bookmarks", "Window"],
+  "System Settings": ["View", "Edit", "Window"],
+  "Motion Design": ["Projects", "Edit", "Object", "View", "Window"],
+  "Showreel 2024": ["Projects", "Edit", "View", "Window"],
+  "Photos": ["Projects", "Edit", "View", "Window"],
+}
+
+const MENU_CONTENT: Record<string, string[]> = {
+  "Projects": ["Portfolio Website", "Motion Graphics Showreel", "Brand Identity"],
+  "Edit": ["CV", "Contact", "Blog"],
+  "View": ["Photo Gallery"],
 }
 
 export function MenuBar({ activeApp }: { activeApp: string }) {
@@ -59,7 +65,7 @@ export function MenuBar({ activeApp }: { activeApp: string }) {
     return () => clearInterval(id)
   }, [])
 
-  const menus = MENU_MAP[activeApp] || ["File", "Edit", "View", "Window", "Help"]
+  const menus = MENU_MAP[activeApp] || ["Projects", "Edit", "View", "Window"]
 
   return (
     <header
@@ -84,16 +90,7 @@ export function MenuBar({ activeApp }: { activeApp: string }) {
               <MenubarItem>System Settings...</MenubarItem>
               <MenubarItem>App Store...</MenubarItem>
               <MenubarSeparator />
-              <MenubarItem>Recent Items</MenubarItem>
-              <MenubarSeparator />
-              <MenubarItem>Force Quit...</MenubarItem>
-              <MenubarSeparator />
-              <MenubarItem>Sleep</MenubarItem>
-              <MenubarItem>Restart...</MenubarItem>
               <MenubarItem>Shut Down...</MenubarItem>
-              <MenubarSeparator />
-              <MenubarItem>Lock Screen</MenubarItem>
-              <MenubarItem>Log Out...</MenubarItem>
             </MenubarContent>
           </MenubarMenu>
 
@@ -122,8 +119,16 @@ export function MenuBar({ activeApp }: { activeApp: string }) {
                 {menu}
               </MenubarTrigger>
               <MenubarContent>
-                <MenubarItem disabled>Option 1</MenubarItem>
-                <MenubarItem disabled>Option 2</MenubarItem>
+                {MENU_CONTENT[menu] ? (
+                  MENU_CONTENT[menu].map((item) => (
+                    <MenubarItem key={item}>{item}</MenubarItem>
+                  ))
+                ) : (
+                  <>
+                    <MenubarItem disabled>Option 1</MenubarItem>
+                    <MenubarItem disabled>Option 2</MenubarItem>
+                  </>
+                )}
               </MenubarContent>
             </MenubarMenu>
           ))}

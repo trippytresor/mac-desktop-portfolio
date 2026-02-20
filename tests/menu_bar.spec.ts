@@ -28,12 +28,12 @@ test.describe('Menu Bar', () => {
 
     // Check for About Me specific menus (or lack of Finder specific ones like 'Go')
     await expect(page.locator('header[role="menubar"] >> text=Go')).not.toBeVisible();
-    await expect(page.locator('header[role="menubar"] >> text=File')).toBeVisible();
+    await expect(page.locator('header[role="menubar"] >> text=Projects')).toBeVisible();
   });
 
   test('should show apple menu content when apple icon clicked', async ({ page }) => {
     await page.locator('header[role="menubar"] .lucide-apple').first().click();
     await expect(page.getByText('About This Mac')).toBeVisible();
-    await expect(page.getByText('Force Quit...')).toBeVisible();
+    await expect(page.getByText('Shut Down...')).toBeVisible();
   });
 });
